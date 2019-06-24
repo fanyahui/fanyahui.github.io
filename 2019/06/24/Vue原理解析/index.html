@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Vue原理解析##Vue原理采用Object.defineProperty() 数据劫持，和发布-订阅者模式，实现双向绑定  通过建立虚拟dom树document.createDocumentFragment(),方法创建虚拟dom树。 一旦被监测的数据改变，会通过Object.defineProperty定义的数据拦截，截取到数据的变化。 截取到的数据变化，从而通过订阅——发布者模式，触发Wat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue原理解析">
+<meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/06/24/Vue原理解析/index.html">
+<meta property="og:site_name" content="吾日三省吾身">
+<meta property="og:description" content="Vue原理解析##Vue原理采用Object.defineProperty() 数据劫持，和发布-订阅者模式，实现双向绑定  通过建立虚拟dom树document.createDocumentFragment(),方法创建虚拟dom树。 一旦被监测的数据改变，会通过Object.defineProperty定义的数据拦截，截取到数据的变化。 截取到的数据变化，从而通过订阅——发布者模式，触发Wat">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-24T14:54:13.207Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue原理解析">
+<meta name="twitter:description" content="Vue原理解析##Vue原理采用Object.defineProperty() 数据劫持，和发布-订阅者模式，实现双向绑定  通过建立虚拟dom树document.createDocumentFragment(),方法创建虚拟dom树。 一旦被监测的数据改变，会通过Object.defineProperty定义的数据拦截，截取到数据的变化。 截取到的数据变化，从而通过订阅——发布者模式，触发Wat">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/fanyahui/fanyahui.github.io/2019/06/24/Vue原理解析/">
+
+
+
+
+
+  <title>Vue原理解析 | 吾日三省吾身</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吾日三省吾身</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/fanyahui/fanyahui.github.io/2019/06/24/Vue原理解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.fan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吾日三省吾身">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue原理解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-24T22:54:05+08:00">
+                2019-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Vue原理解析"><a href="#Vue原理解析" class="headerlink" title="Vue原理解析"></a>Vue原理解析</h1><p>##Vue原理<br>采用Object.defineProperty() 数据劫持，和发布-订阅者模式，实现双向绑定</p>
+<ol>
+<li>通过建立虚拟dom树document.createDocumentFragment(),方法创建虚拟dom树。</li>
+<li>一旦被监测的数据改变，会通过<font color="red"><strong>Object.defineProperty</strong></font>定义的数据拦截，截取到数据的变化。</li>
+<li>截取到的数据变化，从而<font color="red"><strong>通过订阅——发布者</strong></font>模式，触发Watcher（观察者）,从而改变虚拟dom的中的具体数据。</li>
+<li>最后，通过更新虚拟dom的元素值，从而改变最后渲染dom树的值，完成双向绑定</li>
+</ol>
+<p>##数据拦截简单实现<br>    Object.defineProperty() 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。<br>    语法：Object.defineProperty(obj, prop, descriptor)</p>
+<pre><code>$(function (param) { 
+        var obj = {};
+        Object.defineProperty(obj,&apos;hello&apos;,{
+            get: function () { 
+                //执行obj.hello 时，拦截到了数据
+                console.log(&quot;调用了getter方法&quot;);
+             },
+             set: function (newValue) { 
+                     // 执行obj.hello = &apos;hello world&apos;，拦截到数据
+                 console.log(&quot;调用setter方法&quot;);
+              }
+        });
+        obj.hello;
+        obj.hello = &apos;hello world&apos;;
+     })
+     效果：![tomcat-load](/images/object.defineProperty.png)
+     对其更底层对象属性的修改或获取的阶段进行了拦截（对象属性更改的钩子函数）。</code></pre><p>在数据拦截的基础上，可以做到数据的双向绑定</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div id=<span class="string">"mvvm"</span>&gt;</span><br><span class="line">        &lt;input type=<span class="string">"text"</span> id=<span class="string">"test"</span>/&gt;</span><br><span class="line">        &lt;div id=<span class="string">"test1"</span>&gt;&lt;/div&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>body&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line">    $(<span class="function"><span class="keyword">function</span> (<span class="params">param</span>) </span>&#123; </span><br><span class="line">        <span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line">        <span class="built_in">Object</span>.defineProperty(obj,<span class="string">'hello'</span>,&#123;</span><br><span class="line">            <span class="keyword">get</span>: function () &#123; </span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"调用了getter方法"</span>);</span><br><span class="line">             &#125;,</span><br><span class="line">             <span class="keyword">set</span>: function (newValue) &#123; </span><br><span class="line">                 <span class="built_in">console</span>.log(<span class="string">"调用setter方法"</span>);</span><br><span class="line">                 <span class="built_in">document</span>.getElementById(<span class="string">'test'</span>).value = newValue;</span><br><span class="line">                 <span class="built_in">document</span>.getElementById(<span class="string">'test1'</span>).innerHTML = newValue;</span><br><span class="line">              &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// obj.hello;</span></span><br><span class="line">        obj.hello = <span class="string">'hello world'</span>;</span><br><span class="line">        $(<span class="string">'#test'</span>).bind(<span class="string">'input'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123; </span><br><span class="line">            obj.hello = e.target.value;</span><br><span class="line">         &#125;)</span><br><span class="line">     &#125;)</span><br><span class="line">    </span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>##了解了基本组成原理了，现在开始实现一个Vue<br>        1:创建Vue的虚拟节点容器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">nodeContainer</span>(<span class="params">node, vm, flag</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> flag = flag || <span class="built_in">document</span>.createDocumentFragment();</span><br><span class="line">  <span class="keyword">var</span> child;</span><br><span class="line">  <span class="keyword">while</span>(child = node.firstChild)&#123;</span><br><span class="line">  	<span class="comment">//编译</span></span><br><span class="line">    compile(child, vm);</span><br><span class="line">    flag.appendChild(child);</span><br><span class="line">    <span class="keyword">if</span>(child.firstChild)&#123;</span><br><span class="line">      <span class="comment">// flag.appendChild(nodeContainer(child,vm));</span></span><br><span class="line">      nodeContainer(child, vm, flag);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1: while(child = node.firstChild)把node的firstChild赋值成while的条件，可以看做是遍历所有的dom节点。一旦遍历到底了，node的firstChild就会未定义成undefined就跳出while。</span></span><br><span class="line"><span class="comment">// 2: document.createDocumentFragment();是一个虚拟节点的容器树，可以存放我们的虚拟节点。</span></span><br><span class="line"><span class="comment">// 3: 上面的函数是个迭代，一直循环到节点的终点为止。</span></span><br></pre></td></tr></table></figure>
+
+<p>##Vue 初始方法编译</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> demo = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">	el: <span class="string">'mvvm'</span>,</span><br><span class="line">	data: &#123;</span><br><span class="line">		text: <span class="string">'hello world'</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Vue</span> (<span class="params">options</span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取到传入的data</span></span><br><span class="line">	<span class="keyword">this</span>.data = options.data;</span><br><span class="line">	<span class="comment">//获取到Vue实例的 el id</span></span><br><span class="line">	<span class="keyword">var</span> id = options.el;</span><br><span class="line">	<span class="comment">//创建该Vue实例的虚拟dom节点并编译</span></span><br><span class="line">	<span class="keyword">var</span> dom = nodeContainer(<span class="built_in">document</span>.getElementById(id),<span class="keyword">this</span>);</span><br><span class="line">	<span class="comment">//把生成的虚拟节点增加到真是的节点下</span></span><br><span class="line">	<span class="built_in">document</span>.getElementById(id).appendChild(dom);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>##编译</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compile</span>(<span class="params">node, vm</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> reg = <span class="regexp">/\&#123;\&#123;(.*)\&#125;\&#125;/g</span>;<span class="comment">//匹配双绑的双大括号</span></span><br><span class="line">  <span class="keyword">if</span>(node.nodeType === <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> attr = node.attributes;</span><br><span class="line">    <span class="comment">//解析节点的属性</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i &lt; attr.length; i++)&#123;</span><br><span class="line">      <span class="keyword">if</span>(attr[i].nodeName == <span class="string">'v-model'</span>)&#123;</span><br><span class="line">        <span class="keyword">var</span> name = attr[i].nodeValue;</span><br><span class="line">        node.value = vm.data[name];<span class="comment">//讲实例中的data数据赋值给节点</span></span><br><span class="line">        <span class="comment">//node.removeAttribute('v-model');</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//如果节点类型为text</span></span><br><span class="line">  <span class="keyword">if</span>(node.nodeType === <span class="number">3</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(reg.test(node.nodeValue))&#123;</span><br><span class="line">      <span class="comment">// console.dir(node);</span></span><br><span class="line">      <span class="keyword">var</span> name = <span class="built_in">RegExp</span>.$<span class="number">1</span>;<span class="comment">//获取匹配到的字符串</span></span><br><span class="line">      name = name.trim();</span><br><span class="line">      node.nodeValue = vm.data[name];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code>代码解释：当nodeType为1的时候，表示是个元素。同时我们进行判断，如果节点中的指令含有v-model这个指令，那么我们就初始化，进行对节点的值的赋值。
+如果nodeType为3的时候，也就是text节点属性。表示你的节点到了终点，一般都是节点的前后末端。我们常常在这里定义我们的双绑值。此时一旦匹配到了双绑（双大括号），即进行值的初始化。
+至此，我们的Vue初始化已经完成。</code></pre><p>###未完待续。。。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/18/docker-学习/" rel="next" title="docker 学习">
+                <i class="fa fa-chevron-left"></i> docker 学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mr.fan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue原理解析"><span class="nav-number">1.</span> <span class="nav-text">Vue原理解析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mr.fan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
