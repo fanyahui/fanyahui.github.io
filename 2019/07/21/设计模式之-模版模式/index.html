@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="###模版方法设计模式在实际开过的过程中，我们常会遇到这中情况，在设计一个业务的时候，我们知道这个业务所需的关键步骤，并且可以确定这些步骤的顺序，但是某些步骤的实现未知，或者具体的实现于环境相关。 举一些实际开发过程中遇到的场景，文件导入，订单审批，银行办理业务的功能。这些都是有一些公共并且必不可少的流程，而且根据业务的不同在某些步骤会有差异 ##模版方法的定义和特点模板方法（Template M">
+<meta name="description" content="模版方法设计模式在实际开过的过程中，我们常会遇到这中情况，在设计一个业务的时候，我们知道这个业务所需的关键步骤，并且可以确定这些步骤的顺序，但是某些步骤的实现未知，或者具体的实现于环境相关。 举一些实际开发过程中遇到的场景，文件导入，订单审批，银行办理业务的功能。这些都是有一些公共并且必不可少的流程，而且根据业务的不同在某些步骤会有差异 模版方法的定义和特点模板方法（Template Method">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之--模版模式">
 <meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/07/21/设计模式之-模版模式/index.html">
 <meta property="og:site_name" content="吾日三省吾身">
-<meta property="og:description" content="###模版方法设计模式在实际开过的过程中，我们常会遇到这中情况，在设计一个业务的时候，我们知道这个业务所需的关键步骤，并且可以确定这些步骤的顺序，但是某些步骤的实现未知，或者具体的实现于环境相关。 举一些实际开发过程中遇到的场景，文件导入，订单审批，银行办理业务的功能。这些都是有一些公共并且必不可少的流程，而且根据业务的不同在某些步骤会有差异 ##模版方法的定义和特点模板方法（Template M">
+<meta property="og:description" content="模版方法设计模式在实际开过的过程中，我们常会遇到这中情况，在设计一个业务的时候，我们知道这个业务所需的关键步骤，并且可以确定这些步骤的顺序，但是某些步骤的实现未知，或者具体的实现于环境相关。 举一些实际开发过程中遇到的场景，文件导入，订单审批，银行办理业务的功能。这些都是有一些公共并且必不可少的流程，而且根据业务的不同在某些步骤会有差异 模版方法的定义和特点模板方法（Template Method">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/images/template-method-1.png">
 <meta property="og:image" content="https://github.com/images/template-method-2.png">
-<meta property="og:updated_time" content="2019-07-21T04:06:40.453Z">
+<meta property="og:updated_time" content="2019-07-21T04:11:44.353Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之--模版模式">
-<meta name="twitter:description" content="###模版方法设计模式在实际开过的过程中，我们常会遇到这中情况，在设计一个业务的时候，我们知道这个业务所需的关键步骤，并且可以确定这些步骤的顺序，但是某些步骤的实现未知，或者具体的实现于环境相关。 举一些实际开发过程中遇到的场景，文件导入，订单审批，银行办理业务的功能。这些都是有一些公共并且必不可少的流程，而且根据业务的不同在某些步骤会有差异 ##模版方法的定义和特点模板方法（Template M">
+<meta name="twitter:description" content="模版方法设计模式在实际开过的过程中，我们常会遇到这中情况，在设计一个业务的时候，我们知道这个业务所需的关键步骤，并且可以确定这些步骤的顺序，但是某些步骤的实现未知，或者具体的实现于环境相关。 举一些实际开发过程中遇到的场景，文件导入，订单审批，银行办理业务的功能。这些都是有一些公共并且必不可少的流程，而且根据业务的不同在某些步骤会有差异 模版方法的定义和特点模板方法（Template Method">
 <meta name="twitter:image" content="https://github.com/images/template-method-1.png">
 
 
@@ -302,9 +302,9 @@
       
 
       
-        <p>###模版方法设计模式<br>在实际开过的过程中，我们常会遇到这中情况，在设计一个业务的时候，我们知道这个业务所需的关键步骤，并且可以确定这些步骤的顺序，但是某些步骤的实现未知，或者具体的实现于环境相关。</p>
+        <h2 id="模版方法设计模式"><a href="#模版方法设计模式" class="headerlink" title="模版方法设计模式"></a>模版方法设计模式</h2><p>在实际开过的过程中，我们常会遇到这中情况，在设计一个业务的时候，我们知道这个业务所需的关键步骤，并且可以确定这些步骤的顺序，但是某些步骤的实现未知，或者具体的实现于环境相关。</p>
 <p>举一些实际开发过程中遇到的场景，文件导入，订单审批，银行办理业务的功能。这些都是有一些公共并且必不可少的流程，而且根据业务的不同在某些步骤会有差异</p>
-<p>##模版方法的定义和特点<br>模板方法（Template Method）模式的定义如下：定义一个操作中的算法骨架，而将算法的一些步骤延迟到子类中，使得子类可以不改变该算法结构的情况下重定义该算法的某些特定步骤。它是一种类行为型模式。（符合开闭原则）</p>
+<h3 id="模版方法的定义和特点"><a href="#模版方法的定义和特点" class="headerlink" title="模版方法的定义和特点"></a>模版方法的定义和特点</h3><p>模板方法（Template Method）模式的定义如下：定义一个操作中的算法骨架，而将算法的一些步骤延迟到子类中，使得子类可以不改变该算法结构的情况下重定义该算法的某些特定步骤。它是一种类行为型模式。（符合开闭原则）</p>
 <p>该模式的主要优点如下：</p>
 <ul>
 <li>它封装了不变部分，扩展可变部分。它把认为是不变部分的算法封装到父类中实现，而把可变部分算法由子类继承实现，便于子类继续扩展。</li>
@@ -316,9 +316,9 @@
 <li>对每个不同的实现都需要定义一个子类，这会导致类的个数增加，系统更加庞大，设计也更加抽象。</li>
 <li>父类中的抽象方法由子类实现，子类执行的结果会影响父类的结果，这导致一种反向的控制结构，它提高了代码阅读的难度。</li>
 </ul>
-<p>##模版模式的结构和实现<br>模版方法模式只要是抽象主类和子类之间的协作，它用到了函数的多态性，和“不用调用我，让我来调用你”的反向控制技术（入口为父抽象类）。</p>
-<p>###1:模版模式结构<br>抽象类（abstract class）: 负责定义模式的轮廓和结构，由一个抽象方法和若干个基本方法组成<br>        模版方法：定义结构，按照业务结构调用基本方法<br>        基本方法：<br>                        抽象方法：在抽象父类中声明，由子类实现<br>                        具体方法：在抽象类中实现，在子类可以继承或重写<br>                        钩子方法：在抽象类中实现，包括用于判断的逻辑方法和需要子类重写的空方法两种。</p>
-<p>###2:模版模式代码实现<br>以文件导入为例。<br>文件导入有相关以下步骤：</p>
+<h2 id="模版模式的结构和实现"><a href="#模版模式的结构和实现" class="headerlink" title="模版模式的结构和实现"></a>模版模式的结构和实现</h2><p>模版方法模式只要是抽象主类和子类之间的协作，它用到了函数的多态性，和“不用调用我，让我来调用你”的反向控制技术（入口为父抽象类）。</p>
+<h3 id="1-模版模式结构"><a href="#1-模版模式结构" class="headerlink" title="1:模版模式结构"></a>1:模版模式结构</h3><p>抽象类（abstract class）: 负责定义模式的轮廓和结构，由一个抽象方法和若干个基本方法组成<br>        模版方法：定义结构，按照业务结构调用基本方法<br>        基本方法：<br>                        抽象方法：在抽象父类中声明，由子类实现<br>                        具体方法：在抽象类中实现，在子类可以继承或重写<br>                        钩子方法：在抽象类中实现，包括用于判断的逻辑方法和需要子类重写的空方法两种。</p>
+<h3 id="2-模版模式代码实现"><a href="#2-模版模式代码实现" class="headerlink" title="2:模版模式代码实现"></a>2:模版模式代码实现</h3><p>以文件导入为例。<br>文件导入有相关以下步骤：</p>
 <ol>
 <li>校验文件格式</li>
 <li>读取解析文件</li>
@@ -334,7 +334,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.design.patterns.templatePattern;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileInputAmerica</span> <span class="keyword">extends</span> <span class="title">FileInputAbstract</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">validateFileContect</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"3:校验导入文件的每一行数据是否符合当前业务规则"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">saveFileContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"4:校验过的数据存入特定的表中"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>运行结果如下：<br><img src="/images/template-method-1.png" alt="tomcat-load"></p>
-<p>##模式个扩展<br>当需要控制子类的扩展时，模板方法只在特定点调用钩子操作，这样就只允许在这些点进行扩展。<br>例如：如果文件导入成功后，需要给特定的人发送通知，这是需要用钩子操作来扩展</p>
+<h2 id="模式扩展"><a href="#模式扩展" class="headerlink" title="模式扩展"></a>模式扩展</h2><p>当需要控制子类的扩展时，模板方法只在特定点调用钩子操作，这样就只允许在这些点进行扩展。<br>例如：如果文件导入成功后，需要给特定的人发送通知，这是需要用钩子操作来扩展</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.design.patterns.templatePattern;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FileInputAbstract</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">templateMethod</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        checkFile();</span><br><span class="line">        readFile();</span><br><span class="line">        validateFileContect();</span><br><span class="line">        saveFileContent();</span><br><span class="line">        addFileInputLog();</span><br><span class="line">        <span class="keyword">if</span>(hookMethod())&#123;</span><br><span class="line">            hookMethodImpl();</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">hookMethodImpl</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hookMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//钩子函数默认关闭</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addFileInputLog</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"5:添加文件导入日志"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">validateFileContect</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">saveFileContent</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"2:读取文件"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"1:校验文件格式"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.design.patterns.templatePattern;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileInputAmerica</span> <span class="keyword">extends</span> <span class="title">FileInputAbstract</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重写父类钩子函数开关</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hookMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"开启钩子函数。。。。"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">hookMethodImpl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"6:给客户发送email"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">validateFileContect</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"3:校验导入文件的每一行数据是否符合当前业务规则"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">saveFileContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"4:校验过的数据存入特定的表中"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -425,8 +425,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -477,6 +486,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模版方法设计模式"><span class="nav-number">1.</span> <span class="nav-text">模版方法设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模版方法的定义和特点"><span class="nav-number">1.1.</span> <span class="nav-text">模版方法的定义和特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模版模式的结构和实现"><span class="nav-number">2.</span> <span class="nav-text">模版模式的结构和实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-模版模式结构"><span class="nav-number">2.1.</span> <span class="nav-text">1:模版模式结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-模版模式代码实现"><span class="nav-number">2.2.</span> <span class="nav-text">2:模版模式代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模式扩展"><span class="nav-number">3.</span> <span class="nav-text">模式扩展</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
