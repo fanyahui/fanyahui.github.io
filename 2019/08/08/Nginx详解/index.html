@@ -79,19 +79,17 @@
 
 
 
-<meta name="description" content="MemCache原理memcache是一个高性能的分布式内存缓存服务器，它的分布式其实在服务端是不具有分布式的特征的，是依靠客户端的分布式算法进行了分布式，memcached是一个纯内存型的数据库，这样在读写速度上相对来说比较快。 memcache采用预先分配原则，这种是空间换时间的方式来提高它的速度，但是不能很高效的利用内存空间，但是memcache采用Slab Allocation机制来解决内">
+<meta name="description" content="MySQL优化· in 查询 12345678910111213//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描select goods_id,goods_name,cat_id from goods where cat_id in (select cat_id from catgory where pare">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MemCache解析">
-<meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/07/08/MemCache解析/index.html">
+<meta property="og:title" content="Nginx详解">
+<meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/08/08/Nginx详解/index.html">
 <meta property="og:site_name" content="吾日三省吾身">
-<meta property="og:description" content="MemCache原理memcache是一个高性能的分布式内存缓存服务器，它的分布式其实在服务端是不具有分布式的特征的，是依靠客户端的分布式算法进行了分布式，memcached是一个纯内存型的数据库，这样在读写速度上相对来说比较快。 memcache采用预先分配原则，这种是空间换时间的方式来提高它的速度，但是不能很高效的利用内存空间，但是memcache采用Slab Allocation机制来解决内">
+<meta property="og:description" content="MySQL优化· in 查询 12345678910111213//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描select goods_id,goods_name,cat_id from goods where cat_id in (select cat_id from catgory where pare">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://github.com/images/mem-1.png">
-<meta property="og:updated_time" content="2019-07-08T13:39:50.118Z">
+<meta property="og:updated_time" content="2019-08-08T10:19:20.082Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MemCache解析">
-<meta name="twitter:description" content="MemCache原理memcache是一个高性能的分布式内存缓存服务器，它的分布式其实在服务端是不具有分布式的特征的，是依靠客户端的分布式算法进行了分布式，memcached是一个纯内存型的数据库，这样在读写速度上相对来说比较快。 memcache采用预先分配原则，这种是空间换时间的方式来提高它的速度，但是不能很高效的利用内存空间，但是memcache采用Slab Allocation机制来解决内">
-<meta name="twitter:image" content="https://github.com/images/mem-1.png">
+<meta name="twitter:title" content="Nginx详解">
+<meta name="twitter:description" content="MySQL优化· in 查询 12345678910111213//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描select goods_id,goods_name,cat_id from goods where cat_id in (select cat_id from catgory where pare">
 
 
 
@@ -121,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/fanyahui/fanyahui.github.io/2019/07/08/MemCache解析/">
+  <link rel="canonical" href="https://github.com/fanyahui/fanyahui.github.io/2019/08/08/Nginx详解/">
 
 
 
 
 
-  <title>MemCache解析 | 吾日三省吾身</title>
+  <title>Nginx详解 | 吾日三省吾身</title>
   
 
 
@@ -234,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/fanyahui/fanyahui.github.io/2019/07/08/MemCache解析/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/fanyahui/fanyahui.github.io/2019/08/08/Nginx详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.fan">
@@ -251,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MemCache解析</h1>
+          <h1 class="post-title" itemprop="name headline">Nginx详解</h1>
         
 
         <div class="post-meta">
@@ -263,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-08T21:37:27+08:00">
-                2019-07-08
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-08T18:19:16+08:00">
+                2019-08-08
               </time>
             
 
@@ -301,24 +299,8 @@
       
 
       
-        <h1 id="MemCache原理"><a href="#MemCache原理" class="headerlink" title="MemCache原理"></a>MemCache原理</h1><pre><code>memcache是一个高性能的分布式内存缓存服务器，它的分布式其实在服务端是不具有分布式的特征的，是依靠客户端的分布式算法进行了分布式，memcached是一个纯内存型的数据库，这样在读写速度上相对来说比较快。
-memcache采用预先分配原则，这种是空间换时间的方式来提高它的速度，但是不能很高效的利用内存空间，但是memcache采用Slab Allocation机制来解决内存碎片的问题，其原理是按照预先规定的大小，将分配的内存分割成特定长度的快，把尺寸相同的快分成组（chunk组）下图</code></pre><p><img src="/images/mem-1.png" alt="tomcat-load"></p>
-<pre><code>memcached会针对客户端发送的数据选择slab并缓存到chunk中，这样就有一个弊端那就是比如要缓存的数据大小是50个字节，如果被分配到如上图88字节的chunk中的时候就造成了33个字节的浪费，虽然在内存中不会存在碎片，但是也造成了内存的浪费，这也是我上面说的拿空间换时间的原因，不过memcached对于分配到的内存不会释放，而是重复利用。默认情况下如下图chunk是1.25倍的增加的。
-memcache不会监视缓存是否过期，get的时候会检查缓存是否过期（过期，删除，返回空），这是mem的惰性过期机制，默认情况，mem内部会维护一套LRU算法，当内存满时，会把最近最少使用的数据清楚出去，
-所以，提升mem的效率：
-        1:根据业务存放的value值来调整chunk的大小，以达到最大效率利用内存
-        2:扩大内存，保证所有缓存数据不会被清除出去</code></pre><p>mem服务器之间是不能通信的，其分布式完全是依靠客户端的分布式算法来完成数据的分布式存储，分布式算法先算出每个服务器的hash，然后将他们分配的2的32方的圆上，然后根据缓存key的hash来映射到圆上，属于哪个区间，顺时针找到的节点就缓存到该服务器上。</p>
-<p>再总结MemCache的特性和限制</p>
-<p>上面已经对于MemCache做了一个比较详细的解读，这里再次总结MemCache的限制和特性：</p>
-<p>1、MemCache中可以保存的item数据量是没有限制的，只要内存足够</p>
-<p>2、MemCache单进程在32位机中最大使用内存为2G，这个之前的文章提了多次了，64位机则没有限制</p>
-<p>3、Key最大为250个字节，超过该长度无法存储</p>
-<p>4、单个item最大数据是1MB，超过1MB的数据不予存储</p>
-<p>5、MemCache服务端是不安全的，比如已知某个MemCache节点，可以直接telnet过去，并通过flush_all让已经存在的键值对立即失效</p>
-<p>6、不能够遍历MemCache中所有的item，因为这个操作的速度相对缓慢且会阻塞其他的操作</p>
-<p>7、MemCache的高性能源自于两阶段哈希结构：第一阶段在客户端，通过Hash算法根据Key值算出一个节点；第二阶段在服务端，通过一个内部的Hash算法，查找真正的item并返回给客户端。从实现的角度看，MemCache是一个非阻塞的、基于事件的服务器程序</p>
-<p>8、MemCache设置添加某一个Key值的时候，传入expiry为0表示这个Key值永久有效，这个Key值也会在30天之后失效</p>
-
+        <h2 id="MySQL优化"><a href="#MySQL优化" class="headerlink" title="MySQL优化"></a>MySQL优化</h2><p>· in 查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描</span><br><span class="line"><span class="keyword">select</span> goods_id,goods_name,cat_id <span class="keyword">from</span> goods <span class="keyword">where</span> cat_id <span class="keyword">in</span> (<span class="keyword">select</span> cat_id <span class="keyword">from</span> catgory <span class="keyword">where</span> parent_id = <span class="string">'6'</span>)</span><br><span class="line">**原因**：mysql 在执行<span class="keyword">in</span>查询的时候，是外层表取一条，然后取出<span class="keyword">in</span>的字段，在去内层表中查，并且拼上内层的条件，所以，外层表会全表每条都查一遍，并且都会和内层表去匹配，这样就导致，如果外层表条数越多，效率越低.</span><br><span class="line">mysql伪查询执行如下：</span><br><span class="line">		//先查询外层goods表中一条数据，取出<span class="keyword">in</span> 内表的字段</span><br><span class="line">		<span class="number">1</span>:<span class="keyword">select</span> cat_id <span class="keyword">from</span> goods <span class="keyword">limit</span> <span class="number">1</span>;  //比如cat_id为1</span><br><span class="line">		//把外层表取出的cat_id 拿着去内层表中去匹配</span><br><span class="line">		2:<span class="keyword">select</span> * <span class="keyword">from</span> catgory <span class="keyword">where</span> cat_id = <span class="number">1</span> <span class="keyword">and</span> parent_id = <span class="number">6</span>;</span><br><span class="line">		如果匹配到，返回，然后继续第一步，外层goods表总有多少条数据，以上步骤就会执行多少次</span><br><span class="line">		</span><br><span class="line">**解决**：用inner join 链接查询，把内层查出来映射成临时表，用外层链接临时表，这样，两张表都走索引</span><br><span class="line"><span class="keyword">select</span> goods_id,goods_name,cat_id <span class="keyword">from</span> goods <span class="keyword">inner</span> <span class="keyword">join</span> (<span class="keyword">select</span> cat_id <span class="keyword">from</span> catgory <span class="keyword">where</span> parent_id = <span class="string">'6'</span>) temp <span class="keyword">on</span> temp.cat_id = goods.cai_id</span><br><span class="line">之前内层表catgory用索引 parent_id 查询，外层表用cat_id链接查询结果，走索引。</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -342,8 +324,8 @@ memcache不会监视缓存是否过期，get的时候会检查缓存是否过期
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/24/Vue原理解析/" rel="next" title="Vue原理解析">
-                <i class="fa fa-chevron-left"></i> Vue原理解析
+              <a href="/2019/08/08/zookeeper/" rel="next" title="zookeeper">
+                <i class="fa fa-chevron-left"></i> zookeeper
               </a>
             
           </div>
@@ -351,10 +333,6 @@ memcache不会监视缓存是否过期，get的时候会检查缓存是否过期
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/09/一致性哈希算法/" rel="prev" title="一致性哈希算法">
-                一致性哈希算法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -477,7 +455,7 @@ memcache不会监视缓存是否过期，get的时候会检查缓存是否过期
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MemCache原理"><span class="nav-number">1.</span> <span class="nav-text">MemCache原理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL优化"><span class="nav-number">1.</span> <span class="nav-text">MySQL优化</span></a></li></ol></div>
             
 
           </div>
