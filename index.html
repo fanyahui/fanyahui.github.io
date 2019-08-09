@@ -300,8 +300,14 @@
       
         
           
-          MySQL优化· in 查询
-12345678910111213//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描select goods_id,goods_name,cat_id from goods wher
+          MySQL优化
+增加冗余字段，空间换时间
+varchar(10)和varchar(255) 都存储相同的数据，连表查询时，varchar(255)更占内存
+字段避免存null，不走索引
+
+索引类型
+Btree 索引
+- 表的索引会生成一个单独的数据结构，类似于二叉树结构存储，每个节点存储key(索引
           ...
           <!--noindex-->
           <div class="post-button text-center">

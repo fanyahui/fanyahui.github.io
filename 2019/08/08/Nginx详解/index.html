@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="MySQL优化· in 查询 12345678910111213//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描select goods_id,goods_name,cat_id from goods where cat_id in (select cat_id from catgory where pare">
+<meta name="description" content="MySQL优化 增加冗余字段，空间换时间 varchar(10)和varchar(255) 都存储相同的数据，连表查询时，varchar(255)更占内存 字段避免存null，不走索引  索引类型 Btree 索引 - 表的索引会生成一个单独的数据结构，类似于二叉树结构存储，每个节点存储key(索引)和指向数据的地址（真正表中的数据地址） - btree索引常见误区：把where后常用列都加上索引">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL优化">
 <meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/08/08/Nginx详解/index.html">
 <meta property="og:site_name" content="吾日三省吾身">
-<meta property="og:description" content="MySQL优化· in 查询 12345678910111213//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描select goods_id,goods_name,cat_id from goods where cat_id in (select cat_id from catgory where pare">
+<meta property="og:description" content="MySQL优化 增加冗余字段，空间换时间 varchar(10)和varchar(255) 都存储相同的数据，连表查询时，varchar(255)更占内存 字段避免存null，不走索引  索引类型 Btree 索引 - 表的索引会生成一个单独的数据结构，类似于二叉树结构存储，每个节点存储key(索引)和指向数据的地址（真正表中的数据地址） - btree索引常见误区：把where后常用列都加上索引">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-08T10:22:31.218Z">
+<meta property="og:updated_time" content="2019-08-09T10:11:48.185Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL优化">
-<meta name="twitter:description" content="MySQL优化· in 查询 12345678910111213//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描select goods_id,goods_name,cat_id from goods where cat_id in (select cat_id from catgory where pare">
+<meta name="twitter:description" content="MySQL优化 增加冗余字段，空间换时间 varchar(10)和varchar(255) 都存储相同的数据，连表查询时，varchar(255)更占内存 字段避免存null，不走索引  索引类型 Btree 索引 - 表的索引会生成一个单独的数据结构，类似于二叉树结构存储，每个节点存储key(索引)和指向数据的地址（真正表中的数据地址） - btree索引常见误区：把where后常用列都加上索引">
 
 
 
@@ -299,8 +299,79 @@
       
 
       
-        <h2 id="MySQL优化"><a href="#MySQL优化" class="headerlink" title="MySQL优化"></a>MySQL优化</h2><p>· in 查询</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描</span><br><span class="line"><span class="keyword">select</span> goods_id,goods_name,cat_id <span class="keyword">from</span> goods <span class="keyword">where</span> cat_id <span class="keyword">in</span> (<span class="keyword">select</span> cat_id <span class="keyword">from</span> catgory <span class="keyword">where</span> parent_id = <span class="string">'6'</span>)</span><br><span class="line">· 原因：mysql 在执行<span class="keyword">in</span>查询的时候，是外层表取一条，然后取出<span class="keyword">in</span>的字段，在去内层表中查，并且拼上内层的条件，所以，外层表会全表每条都查一遍，并且都会和内层表去匹配，这样就导致，如果外层表条数越多，效率越低.</span><br><span class="line">mysql伪查询执行如下：</span><br><span class="line">		//先查询外层goods表中一条数据，取出<span class="keyword">in</span> 内表的字段</span><br><span class="line">		<span class="number">1</span>:<span class="keyword">select</span> cat_id <span class="keyword">from</span> goods <span class="keyword">limit</span> <span class="number">1</span>;  //比如cat_id为1</span><br><span class="line">		//把外层表取出的cat_id 拿着去内层表中去匹配</span><br><span class="line">		2:<span class="keyword">select</span> * <span class="keyword">from</span> catgory <span class="keyword">where</span> cat_id = <span class="number">1</span> <span class="keyword">and</span> parent_id = <span class="number">6</span>;</span><br><span class="line">		如果匹配到，返回，然后继续第一步，外层goods表总有多少条数据，以上步骤就会执行多少次</span><br><span class="line">		</span><br><span class="line">· 解决：用inner join 链接查询，把内层查出来映射成临时表，用外层链接临时表，这样，两张表都走索引</span><br><span class="line"><span class="keyword">select</span> goods_id,goods_name,cat_id <span class="keyword">from</span> goods <span class="keyword">inner</span> <span class="keyword">join</span> (<span class="keyword">select</span> cat_id <span class="keyword">from</span> catgory <span class="keyword">where</span> parent_id = <span class="string">'6'</span>) temp <span class="keyword">on</span> temp.cat_id = goods.cai_id</span><br><span class="line">之前内层表catgory用索引 parent_id 查询，外层表用cat_id链接查询结果，走索引。</span><br></pre></td></tr></table></figure>
+        <h2 id="MySQL优化"><a href="#MySQL优化" class="headerlink" title="MySQL优化"></a>MySQL优化</h2><ul>
+<li>增加冗余字段，空间换时间</li>
+<li>varchar(10)和varchar(255) 都存储相同的数据，连表查询时，varchar(255)更占内存</li>
+<li>字段避免存null，不走索引</li>
+</ul>
+<h3 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h3><ul>
+<li><p>Btree 索引</p>
+<pre><code>- 表的索引会生成一个单独的数据结构，类似于二叉树结构存储，每个节点存储key(索引)和指向数据的地址（真正表中的数据地址）
+- btree索引常见误区：把where后常用列都加上索引，如果where id =1 and age &gt; 20,其实最终查询只会用到一个索引，mysql的独立索引同时只能用到一个。
+- 建议建立多列联合索引，但是要注意，联合索引要满足左前缀原则
+注：group by ,order by 也要遵循左前缀原则
+- 可以提高排序速度，因为索引树本来就是有顺序，根据顺序从表中以此取出
+- 可以提高分组速度，要分组必须先排序</code></pre></li>
+<li><p>hash 索引<br>每条数据有对应的hash,查询单一数据效率高，但是查询范围效率低，无法利用前缀索引，每次查询都必须回行，索引树只查询数据位置</p>
+<h3 id="索引类型-1"><a href="#索引类型-1" class="headerlink" title="索引类型"></a>索引类型</h3></li>
+<li><p>聚簇索引 innodb<br>主键索引和行数据一起存放，找到索引就找到数据，不需要回行,<br><font color="red">主键索引和数据存放在一起，如果通过主键索引查找，找到索引就等于找到数据，如果通过其他索引，二级索引或者次索引，会找到对主键索引的引用，然后获取数据</font></p>
+<ol>
+<li>默认主键索引</li>
+<li>没有主键，用Unique key 做主键</li>
+<li>没有Unique key 默认生成 rowId</li>
+</ol>
+</li>
+<li><p>非聚簇索引 myisam<br>索引树和数据是分开存放，先去索引树找到数据位置，然后再去表中找数据,<br><font color="red">索引指向行在磁盘上的位置</font></p>
+</li>
+<li><p>索引覆盖<br>如果执行计划里最后 一个参数<font color="red">Extra是Using Index</font>,那么说明这次查询走了索引覆盖，只在索引树上就找到了要查询的数据，不用回行去表中取数据</p>
+</li>
+<li><p>理想的索引</p>
+<ol>
+<li>查询频繁</li>
+<li>区分度高</li>
+<li>长度下</li>
+<li>尽可能覆盖常用查询字段</li>
+</ol>
+</li>
+<li><p>索引与排序<br>如果在排序语句中，执行计划Extra=Using filesort 这种情况出现了排序，该语句效率不理想<br>避免order by 和 where 都使用了单独索引，或者字段不一样，就会出现 排序</p>
+</li>
+<li><p><font color="red">explain 详解</font></p>
+<ol>
+<li>select_type<br> simple    –简单查询<br> primary    –主要查询<br> subquery    –非from子查询<br> derived    –from子查询<br> union –链接<br> unino_result    –链接查询返回临时表</li>
+<li>table<br> 实际查询的表名，也有可能是表的别名，derived 派生表</li>
+<li>type（效率由低到高）<br> all    –全表扫描<br> index    –扫描所有的索引节点<br> range    –范围查找<br> ref    –精准查询<br> eq_ref    –只有一条精准查询<br> const,system    –常量</li>
+<li>possible_keys<br> 可能用到的索引</li>
+<li>key<br> 实际用到的索引</li>
+<li>key_len<br> 索引用到的最大长度</li>
+<li>ref<br>多表链接查询的链接字段</li>
+<li>rows<br>估计要扫描的行数</li>
+<li>extra<br>Using index    –用到索引覆盖，效率最高<br>Using where    –索引配合where<br>Using temporary    –产生临时表<br>Using filesort    –    文件排序（肯能在内存，可能在磁盘）<pre><code>注：如果取出的列含 text等大的列，排序 filesort会发生在磁盘上
+show table like &apos;%table%&apos;; 查询当前用到多少次临时表，磁盘表
+Created_tmp_disk_tables  --创建了磁盘表
+Created_tmp_tables --创建了临时表</code></pre></li>
+</ol>
+</li>
+</ul>
+<h4 id="in-查询-优化"><a href="#in-查询-优化" class="headerlink" title="in 查询 优化"></a>in 查询 优化</h4><ul>
+<li><p>正常情况下，内层循环parent_id 用到索引，外层cat_id 用到索引，但其实查询执行计划的时候，只有内层用到索引，外层全表扫描</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> goods_id,goods_name,cat_id <span class="keyword">from</span> goods <span class="keyword">where</span> cat_id <span class="keyword">in</span> (<span class="keyword">select</span> cat_id <span class="keyword">from</span> catgory <span class="keyword">where</span> parent_id = <span class="string">'6'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>原因：mysql 在执行in查询的时候，是外层表取一条，然后取出in的字段，在去内层表中查，并且拼上内层的条件，所以，外层表会全表每条都查一遍，并且都会和内层表去匹配，这样就导致，如果外层表条数越多，效率越低.<br>mysql伪查询执行如下：</p>
+<pre><code>//先查询外层goods表中一条数据，取出in 内表的字段
+1:select cat_id from goods limit 1;  //比如cat_id为1
+//把外层表取出的cat_id 拿着去内层表中去匹配
+2:select * from catgory where cat_id = 1 and parent_id = 6;
+如果匹配到，返回，然后继续第一步，外层goods表总有多少条数据，以上步骤就会执行多少次</code></pre></li>
+<li><p>解决：用inner join 链接查询，把内层查出来映射成临时表，用外层链接临时表，这样，两张表都走索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> goods_id,goods_name,cat_id <span class="keyword">from</span> goods <span class="keyword">inner</span> <span class="keyword">join</span> (<span class="keyword">select</span> cat_id <span class="keyword">from</span> catgory <span class="keyword">where</span> parent_id = <span class="string">'6'</span>) temp <span class="keyword">on</span> temp.cat_id = goods.cai_id</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>之前内层表catgory用索引 parent_id 查询，外层表用cat_id链接查询结果，走索引。</p>
+<h4 id="exists"><a href="#exists" class="headerlink" title="exists"></a>exists</h4><p>底层查询会和in来回转换，所有也会存在in出现的问题</p>
+<h4 id="from型子查询"><a href="#from型子查询" class="headerlink" title="from型子查询"></a>from型子查询</h4><p>内层form查询返回的临时表是没有索引的，所以一定要保证内层的查询尽可能的返回少的数据</p>
+<h4 id="limit-优化"><a href="#limit-优化" class="headerlink" title="limit 优化"></a>limit 优化</h4><pre><code>备注：命令 set profiling=1; 开启sql性能分析，show profiles 查看执行的语句，show profile for query 5;</code></pre><p>limit查询原理：（默认主键id索引） select * from user limit 1000010; 查询1000010条数据，然后把前1000000条丢弃，只取最后10条，所以，随着limit页数越大，查询效率越低<font color="red">一般很少有网站可以翻到1000000页，百度最多只翻到76页，这里只说优化场景</font><br>解决：区间查询  select * from user where id &gt; 1000000 limit 10;  id走索引，然后取10条，速度特别快，但前提是<font color="red">表的主键是连续自增并且没有删除的</font><br>如果主键不连续，有删除，用索引覆盖加延时查询：<br>select * from user inner join (select id from user limit 1000000,10) tmp on tmp.id = user.id<br>先用内层查询出主键id，这时是走索引覆盖，效率高，找到具体id后，在次连user表查询具体信息</p>
+
       
     </div>
     
@@ -455,7 +526,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL优化"><span class="nav-number">1.</span> <span class="nav-text">MySQL优化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL优化"><span class="nav-number">1.</span> <span class="nav-text">MySQL优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引类型"><span class="nav-number">1.1.</span> <span class="nav-text">索引类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引类型-1"><span class="nav-number">1.2.</span> <span class="nav-text">索引类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#in-查询-优化"><span class="nav-number">1.2.1.</span> <span class="nav-text">in 查询 优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exists"><span class="nav-number">1.2.2.</span> <span class="nav-text">exists</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#from型子查询"><span class="nav-number">1.2.3.</span> <span class="nav-text">from型子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#limit-优化"><span class="nav-number">1.2.4.</span> <span class="nav-text">limit 优化</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
