@@ -690,8 +690,7 @@ leader选举 （选举时服务器状态：l
       
         
           
-          字符串String 内容不可变字符串，底层用了不可变数组 final char []实现StringBuffer(线程安全)， StringBuild（线程不安全，效率高） 可变字符串， char []
-集合集合分为存储值(collection)，和key-value(map)值：List Set 
+          字符串String 内容不可变字符串，底层用了不可变数组 final char []实现,声明不可变好处，如果声明多个相同的字符串，只会创建一个字符串对象，先会去字符串常量池中找，如果有，把对象的引用指向旧对象，旧对象丢弃StringBuffer(线程安全)， StringBuild（线程不安全，效
           ...
           <!--noindex-->
           <div class="post-button text-center">
