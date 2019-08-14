@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="tomcat,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,20 +79,17 @@
 
 
 
-<meta name="description" content="tomcat启动。默认从webapps下读取war包并解压，读取tomcat webapps 下所有文件，获取所有项目信息 循环所有后项目文件，扫描\WEB-INF\web.xml 获取所有servlet  类加载 默认获取项目下\WEB-INF\classes\文件夹URL classPath = new URL(&amp;quot;file&amp;quot;:+projectPath+&amp;quot;\\WE">
-<meta name="keywords" content="tomcat">
+<meta name="description" content="jvm主要做什么：        从软件层面屏蔽不同操作系统在底层硬件和指令上的区别类加载：加载出运行时数据区（内存模型）  栈（线程栈）：· 每个线程独享的，每个线程开启时，会开辟一个内存，调用时，遇到局部变量，会在开辟的线程栈上开辟一块区域，栈帧来存放局部变量，局部变量在调用到另外一个方法时，又会为这个方法再开辟一块栈帧来存放这个方法的局部变量，不同的方法有独立的栈帧区域 · 栈：先进后出，后">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tomcat加载原理">
-<meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/06/02/深入理解tomcat加载原理/index.html">
+<meta property="og:title" content="jvm 笔记">
+<meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/08/14/jvm-笔记/index.html">
 <meta property="og:site_name" content="吾日三省吾身">
-<meta property="og:description" content="tomcat启动。默认从webapps下读取war包并解压，读取tomcat webapps 下所有文件，获取所有项目信息 循环所有后项目文件，扫描\WEB-INF\web.xml 获取所有servlet  类加载 默认获取项目下\WEB-INF\classes\文件夹URL classPath = new URL(&amp;quot;file&amp;quot;:+projectPath+&amp;quot;\\WE">
+<meta property="og:description" content="jvm主要做什么：        从软件层面屏蔽不同操作系统在底层硬件和指令上的区别类加载：加载出运行时数据区（内存模型）  栈（线程栈）：· 每个线程独享的，每个线程开启时，会开辟一个内存，调用时，遇到局部变量，会在开辟的线程栈上开辟一块区域，栈帧来存放局部变量，局部变量在调用到另外一个方法时，又会为这个方法再开辟一块栈帧来存放这个方法的局部变量，不同的方法有独立的栈帧区域 · 栈：先进后出，后">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://github.com/images/tomcat-load.png">
-<meta property="og:updated_time" content="2019-06-02T12:59:24.649Z">
+<meta property="og:updated_time" content="2019-08-14T15:18:45.167Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tomcat加载原理">
-<meta name="twitter:description" content="tomcat启动。默认从webapps下读取war包并解压，读取tomcat webapps 下所有文件，获取所有项目信息 循环所有后项目文件，扫描\WEB-INF\web.xml 获取所有servlet  类加载 默认获取项目下\WEB-INF\classes\文件夹URL classPath = new URL(&amp;quot;file&amp;quot;:+projectPath+&amp;quot;\\WE">
-<meta name="twitter:image" content="https://github.com/images/tomcat-load.png">
+<meta name="twitter:title" content="jvm 笔记">
+<meta name="twitter:description" content="jvm主要做什么：        从软件层面屏蔽不同操作系统在底层硬件和指令上的区别类加载：加载出运行时数据区（内存模型）  栈（线程栈）：· 每个线程独享的，每个线程开启时，会开辟一个内存，调用时，遇到局部变量，会在开辟的线程栈上开辟一块区域，栈帧来存放局部变量，局部变量在调用到另外一个方法时，又会为这个方法再开辟一块栈帧来存放这个方法的局部变量，不同的方法有独立的栈帧区域 · 栈：先进后出，后">
 
 
 
@@ -122,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/fanyahui/fanyahui.github.io/2019/06/02/深入理解tomcat加载原理/">
+  <link rel="canonical" href="https://github.com/fanyahui/fanyahui.github.io/2019/08/14/jvm-笔记/">
 
 
 
 
 
-  <title>tomcat加载原理 | 吾日三省吾身</title>
+  <title>jvm 笔记 | 吾日三省吾身</title>
   
 
 
@@ -235,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/fanyahui/fanyahui.github.io/2019/06/02/深入理解tomcat加载原理/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/fanyahui/fanyahui.github.io/2019/08/14/jvm-笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.fan">
@@ -252,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">tomcat加载原理</h1>
+          <h1 class="post-title" itemprop="name headline">jvm 笔记</h1>
         
 
         <div class="post-meta">
@@ -264,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-02T12:22:36+08:00">
-                2019-06-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-14T23:18:33+08:00">
+                2019-08-14
               </time>
             
 
@@ -302,18 +299,46 @@
       
 
       
-        <ol>
-<li>tomcat启动。<pre><code>默认从webapps下读取war包并解压，读取tomcat webapps 下所有文件，获取所有项目信息</code></pre></li>
-<li>循环所有后项目文件，扫描\WEB-INF\web.xml 获取所有servlet </li>
-<li>类加载<br> 默认获取项目下\WEB-INF\classes\文件夹<pre><code>URL classPath = new URL(&quot;file&quot;:+projectPath+&quot;\\WEB-INF\\classes\\&quot;);
-URLClassLoader classLoader = new URLClassLoader(new URL[]{classPath});</code></pre> 循环第二步获取到所有的servlet 加载到jvm<pre><code>Class&lt;?&gt; servletClazz = classLoader.loadClass(servletClass);
-Servlet servlet = servletClazz.newInstance();</code></pre></li>
-<li>启动socket<pre><code>ServerSocket serverSocket = new ServerSocket(&quot;8080&quot;)
-Socket socket = serverScket.accept();</code></pre></li>
-<li>根据url 定位要请求的servlet</li>
-<li>调用Servlet.service(HttpServletRequest,HttpServletResponse)</li>
-</ol>
-<p><img src="/images/tomcat-load.png" alt="tomcat-load"></p>
+        <h2 id="jvm"><a href="#jvm" class="headerlink" title="jvm"></a>jvm</h2><p>主要做什么：<br>        从软件层面屏蔽不同操作系统在底层硬件和指令上的区别<br>类加载：加载出运行时数据区（内存模型）</p>
+<ul>
+<li>栈（线程栈）：<pre><code>· 每个线程独享的，每个线程开启时，会开辟一个内存，调用时，遇到局部变量，会在开辟的线程栈上开辟一块区域，栈帧来存放局部变量，局部变量在调用到另外一个方法时，又会为这个方法再开辟一块栈帧来存放这个方法的局部变量，不同的方法有独立的栈帧区域
+· 栈：先进后出，后进先出，一个方法执行完成后对应的栈帧区域立即释放
+· 栈帧组成：
+    · 局部变量表
+        第三步：局部变量表中有一个 a=1
+    · 操作数栈
+        int a = 1;
+        jvm编译后的字节码指令：
+        第一步：iconst_1; 在方法对应的栈帧区域的操作数栈上放入1；
+        第二步：istore_1；在局部变量表中给a创建一块内存区域，把1赋值给a
+        操作数栈就是变量的临时计算区，计算完成之后就会把变量放入对应的局部变量表
+    · 动态链接
+        User user = new User();
+        user.queryUser();
+        动态链接放的就是user对象里调用queryUser在jvm指令码的内存地址，jvm加载的时候会把queryUser加载到方法区，当调用方法时，会根据动态链接找到指令码的内存地址，然后执行方法
+    · 方法出口</code></pre></li>
+<li>线程计数器<pre><code>方当前线程即将执行的指令码内存地址
+作用：当线程sleep时，会记录当前线程的位置，当被唤醒时，从之前的位置继续执行</code></pre></li>
+<li>堆<pre><code>new 出的对象都放在堆内存中
+User user = new User() 栈内存中也会有局部变量user，然后它的指针指向堆内存中的User()
+对象有头指针，会指向方法区中的类元信息
+年轻代：占堆内存的1/3
+    **** Eden:占年轻代的 8/10 ，new出来的对象一般都放到该区域；
+            如果该区域满了，会触发minor gc,对该区域无效的对象进行清理，把还有引用的对象存入Survivor区的From区，把该对象头里的分代年龄+1（经历过一次minor gc就会执行一次）；
+    ~ Survivor    占年轻代的 2/10
+        From区:
+                如果Survivor的From区满了后，也会触发minor gc,无效的清理，有指针引用的放入To区
+        To区:
+                如果To区满了后，也会触发minor gc ,无效的清理，有指针的在放入From区，复制算法
+**** 老年代 占堆内存的2/3
+        当分代年龄到达15后，也就是经过minor gc 还存活的对象，会放入老年代区域；
+        如果老年代区域满了后，会触发full gc ，如果gc后还是满的，那么代码会抛出 OutOfMemoryError内存溢出异常</code></pre></li>
+<li>方法区（元空间）<pre><code>·常量
+·静态变量
+·类元信息</code></pre></li>
+<li>本地方法栈<pre><code>本地方法，用native修饰
+每个内存独有的内存区域</code></pre></li>
+</ul>
 
       
     </div>
@@ -329,12 +354,6 @@ Socket socket = serverScket.accept();</code></pre></li>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/tomcat/" rel="tag"># tomcat</a>
-          
-        </div>
-      
 
       
       
@@ -344,8 +363,8 @@ Socket socket = serverScket.accept();</code></pre></li>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/31/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2019/08/08/Nginx详解/" rel="next" title="MySQL优化">
+                <i class="fa fa-chevron-left"></i> MySQL优化
               </a>
             
           </div>
@@ -353,10 +372,6 @@ Socket socket = serverScket.accept();</code></pre></li>
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/18/docker-学习/" rel="prev" title="docker 学习">
-                docker 学习 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -408,8 +423,17 @@ Socket socket = serverScket.accept();</code></pre></li>
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -460,6 +484,22 @@ Socket socket = serverScket.accept();</code></pre></li>
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#jvm"><span class="nav-number">1.</span> <span class="nav-text">jvm</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
