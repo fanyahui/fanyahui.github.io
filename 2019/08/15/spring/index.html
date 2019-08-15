@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="jvm主要做什么：        从软件层面屏蔽不同操作系统在底层硬件和指令上的区别类加载：加载出运行时数据区（内存模型）  栈（线程栈）：· 每个线程独享的，每个线程开启时，会开辟一个内存，调用时，遇到局部变量，会在开辟的线程栈上开辟一块区域，栈帧来存放局部变量，局部变量在调用到另外一个方法时，又会为这个方法再开辟一块栈帧来存放这个方法的局部变量，不同的方法有独立的栈帧区域 · 栈：先进后出，后">
+<meta name="description" content="Spring注解配置启动AnnotationConfigAppliactionContext ao = new AnnotationConfigApplicationContext(Appconfig.class);Appconfig 类上加 @Configuration @ComponentScan(“扫描的包路径”)实例化过程：  this() – 创建bean工厂 new DefaultLi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="jvm 笔记">
-<meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/08/14/jvm-笔记/index.html">
+<meta property="og:title" content="spring">
+<meta property="og:url" content="https://github.com/fanyahui/fanyahui.github.io/2019/08/15/spring/index.html">
 <meta property="og:site_name" content="吾日三省吾身">
-<meta property="og:description" content="jvm主要做什么：        从软件层面屏蔽不同操作系统在底层硬件和指令上的区别类加载：加载出运行时数据区（内存模型）  栈（线程栈）：· 每个线程独享的，每个线程开启时，会开辟一个内存，调用时，遇到局部变量，会在开辟的线程栈上开辟一块区域，栈帧来存放局部变量，局部变量在调用到另外一个方法时，又会为这个方法再开辟一块栈帧来存放这个方法的局部变量，不同的方法有独立的栈帧区域 · 栈：先进后出，后">
+<meta property="og:description" content="Spring注解配置启动AnnotationConfigAppliactionContext ao = new AnnotationConfigApplicationContext(Appconfig.class);Appconfig 类上加 @Configuration @ComponentScan(“扫描的包路径”)实例化过程：  this() – 创建bean工厂 new DefaultLi">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-14T15:18:45.167Z">
+<meta property="og:updated_time" content="2019-08-15T13:22:58.539Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jvm 笔记">
-<meta name="twitter:description" content="jvm主要做什么：        从软件层面屏蔽不同操作系统在底层硬件和指令上的区别类加载：加载出运行时数据区（内存模型）  栈（线程栈）：· 每个线程独享的，每个线程开启时，会开辟一个内存，调用时，遇到局部变量，会在开辟的线程栈上开辟一块区域，栈帧来存放局部变量，局部变量在调用到另外一个方法时，又会为这个方法再开辟一块栈帧来存放这个方法的局部变量，不同的方法有独立的栈帧区域 · 栈：先进后出，后">
+<meta name="twitter:title" content="spring">
+<meta name="twitter:description" content="Spring注解配置启动AnnotationConfigAppliactionContext ao = new AnnotationConfigApplicationContext(Appconfig.class);Appconfig 类上加 @Configuration @ComponentScan(“扫描的包路径”)实例化过程：  this() – 创建bean工厂 new DefaultLi">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/fanyahui/fanyahui.github.io/2019/08/14/jvm-笔记/">
+  <link rel="canonical" href="https://github.com/fanyahui/fanyahui.github.io/2019/08/15/spring/">
 
 
 
 
 
-  <title>jvm 笔记 | 吾日三省吾身</title>
+  <title>spring | 吾日三省吾身</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/fanyahui/fanyahui.github.io/2019/08/14/jvm-笔记/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/fanyahui/fanyahui.github.io/2019/08/15/spring/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mr.fan">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">jvm 笔记</h1>
+          <h1 class="post-title" itemprop="name headline">spring</h1>
         
 
         <div class="post-meta">
@@ -261,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-14T23:18:33+08:00">
-                2019-08-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-15T21:22:56+08:00">
+                2019-08-15
               </time>
             
 
@@ -299,45 +299,55 @@
       
 
       
-        <h2 id="jvm"><a href="#jvm" class="headerlink" title="jvm"></a>jvm</h2><p>主要做什么：<br>        从软件层面屏蔽不同操作系统在底层硬件和指令上的区别<br>类加载：加载出运行时数据区（内存模型）</p>
+        <h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><h3 id="注解配置启动"><a href="#注解配置启动" class="headerlink" title="注解配置启动"></a>注解配置启动</h3><p>AnnotationConfigAppliactionContext ao = new AnnotationConfigApplicationContext(Appconfig.class);<br>Appconfig 类上加 @Configuration @ComponentScan(“扫描的包路径”)<br>实例化过程：</p>
+<ol>
+<li><p>this() – 创建bean工厂 new DefaultListableBeanFactory()</p>
+</li>
+<li><p>register(annotatedClasses(传入的class类));</p>
 <ul>
-<li>栈（线程栈）：<pre><code>· 每个线程独享的，每个线程开启时，会开辟一个内存，调用时，遇到局部变量，会在开辟的线程栈上开辟一块区域，栈帧来存放局部变量，局部变量在调用到另外一个方法时，又会为这个方法再开辟一块栈帧来存放这个方法的局部变量，不同的方法有独立的栈帧区域
-· 栈：先进后出，后进先出，一个方法执行完成后对应的栈帧区域立即释放
-· 栈帧组成：
-    · 局部变量表
-        第三步：局部变量表中有一个 a=1
-    · 操作数栈
-        int a = 1;
-        jvm编译后的字节码指令：
-        第一步：iconst_1; 在方法对应的栈帧区域的操作数栈上放入1；
-        第二步：istore_1；在局部变量表中给a创建一块内存区域，把1赋值给a
-        操作数栈就是变量的临时计算区，计算完成之后就会把变量放入对应的局部变量表
-    · 动态链接
-        User user = new User();
-        user.queryUser();
-        动态链接放的就是user对象里调用queryUser在jvm指令码的内存地址，jvm加载的时候会把queryUser加载到方法区，当调用方法时，会根据动态链接找到指令码的内存地址，然后执行方法
-    · 方法出口</code></pre></li>
-<li>线程计数器<pre><code>方当前线程即将执行的指令码内存地址
-作用：当线程sleep时，会记录当前线程的位置，当被唤醒时，从之前的位置继续执行</code></pre></li>
-<li>堆<pre><code>new 出的对象都放在堆内存中
-User user = new User() 栈内存中也会有局部变量user，然后它的指针指向堆内存中的User()
-对象有头指针，会指向方法区中的类元信息
-年轻代：占堆内存的1/3
-    **** Eden:占年轻代的 8/10 ，new出来的对象一般都放到该区域；
-            如果该区域满了，会触发minor gc,对该区域无效的对象进行清理，把还有引用的对象存入Survivor区的From区，把该对象头里的分代年龄+1（经历过一次minor gc就会执行一次）；
-    ~ Survivor    占年轻代的 2/10
-        From区:
-                如果Survivor的From区满了后，也会触发minor gc,无效的清理，有指针引用的放入To区
-        To区:
-                如果To区满了后，也会触发minor gc ,无效的清理，有指针的在放入From区，复制算法
-**** 老年代 占堆内存的2/3
-        当分代年龄到达15后，也就是经过minor gc 还存活的对象，会放入老年代区域；
-        如果老年代区域满了后，会触发full gc ，如果gc后还是满的，那么代码会抛出 OutOfMemoryError内存溢出异常</code></pre></li>
-<li>方法区（元空间）<pre><code>·常量
-·静态变量
-·类元信息</code></pre></li>
-<li>本地方法栈<pre><code>本地方法，用native修饰
-每个内存独有的内存区域</code></pre></li>
+<li>把传入的类 定义成BeanDefinition放入 beanDefinitionMap，把所有class放入 beanDefinitionNames list中</li>
+</ul>
+</li>
+<li><p>refresh()</p>
+<ul>
+<li><p>invokeBeanFactoryPostProcessors();</p>
+<pre><code>RootBeanDefinition -初始化bean定义，放入beanDefinitionMap
+在实例化bean的时候，spring提供了接口，可以让程序员来干预bean的初始化 
+**BeanFactoryPostProcessors**,bean工厂后置处理器，可以对放入beanDefinitionMap中的bean属性进行修改 ，比如懒加载，等等。。
+执行内置或者自定义的 beanFactoryPostProcessor实现</code></pre></li>
+<li><p>finishBeanFactoryInitialization(); 实例化bean</p>
+<pre><code>循环beanDefinitionNames ,从beanDefinitionMap获取bean定义
+getBean : 从singletonObjects map 中获取单例bean或者在isSingletonCurrentlyInCareation set中存在 （ 创建中的bean会存入这里，解决循环依赖）
+不存在：创建对象，调用getSingleton()方法，把当前bean放入isSingletonCurrentlyInCareation 的set集合中，然后通过回调，调到createBean()方法
+createBean()：resolveBeforeInstantion() 方法，在这里去解析标注了@Aspect的类，生成aop的切面对象（before,after），进行缓存
+doCreateBean(): 
+----------------在createBeanIntance() 创建对象-----------------，
+在populateBean() 完成bean属性的注入，如@Autowired
+在initializeBean() 进行初始化
+        初始化前，会先调用bean的后置处理器（**BeanPostProcessor**）的前置方法
+        初始化：invokeInitMethods()，调用自定义的初始化方法
+        初始化后：再次调用后置处理的的after方法，（aop的代理对象就是在此处生成）
+初始化完成后会把这个bean加入到 singletonObjects 单例缓存池的map中</code></pre><p>解析—调用构造器—-属性赋值–init ，在这期间后置处理器都会干预bean的初始化<br>spring的9出后置处理器：使用bean的后置处理器来扩展功能<br>· 没有调构造方法前：resolveBeforeInstantion（）中调用，解析切面，事物切面<br>· 在createBeanIntance（）创建bean的时候推断用哪个构造函数去实例化<br>· 预解析@Autowired<br>· 解决循环依赖<br>· populateBean（）在给bean中属性赋值前，可以根据自己实现的后置处理器给属性复制<br>· spring 填充属性到bean对象前<br>· invokeInitMethods 前<br>· invokeInitMethods 后，生成aop代理<br>· 容器销毁时，调用<br>bean作用域：<br>singleyon（单例）:ioc容器管理，只有一个<br>prototype（原型）:没次都从容器中get一个新的bean实例<br>request（web）：存在每个请求中，一个http请求创建一个新的<br>session（http session共享的bean）<br>globalSession（web ）</p>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>spring支持循环依赖，但是bean必须是单例的<h3 id="后置处理器-实现BeanPostProcessor-干预bean的初始化过程"><a href="#后置处理器-实现BeanPostProcessor-干预bean的初始化过程" class="headerlink" title="后置处理器 实现BeanPostProcessor 干预bean的初始化过程"></a>后置处理器 实现BeanPostProcessor 干预bean的初始化过程</h3>在bean声明周期初始化前后执行<h3 id="spring-和spring-MVC整合的时候会出现父子容器"><a href="#spring-和spring-MVC整合的时候会出现父子容器" class="headerlink" title="spring 和spring MVC整合的时候会出现父子容器"></a>spring 和spring MVC整合的时候会出现父子容器</h3>为了职责单一，在spring MVC配置文件中，有一个ContextLoaderListener 监听器，是来加载父容器，dispatcherServlet是初始化子容器<br>root WebApplicationcontext<pre><code>存放：services, Repositories datasources</code></pre>servlet WebApplicationContext 子容器可以引用到父容器的对象<pre><code>存放：Controllers ViewResolvers HandlerMapping</code></pre></li>
+</ul>
+<h3 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h3><p>this（） ：创建bean工厂 new DefaultListableBeanFactory()</p>
+<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>给指定的类生成代理类<br>存放在什么地方：singletonObjects map中，单例缓存池<br>什么时候生成：<br>容器启动，调用refresh方法，<br>-&gt;finishBeanFactoryInitialization()<br>-&gt; doGetBean()<br>-&gt; getSingleton()<br>-&gt; doCreateBean()<br>-&gt; ininializeBean()<br>-&gt; 在bean初始化后，调用后置处理器生成代理对象<br>@EnableAspectJAutoProxy 开启AOP,在这个注解里，通过@import导入了一个组件，AnnoationAwareAspectJCreator(切面生成器组件)，这个组件最终实现了BeanPostProcessor后置处理器接口，切面生成是通过实现importBeanDifiniationRegister 来注册一个bean定义。</p>
+<ul>
+<li><p>什么时候去解析切面：</p>
+<pre><code>在spring初始化创建bean的环节中（还没有调用bean的构造方法之前）去执行bean的后置处理器InstantiationAwareBeanPostProcessor中的postProcessorBeforeInstatiation方法进行处理。由于此时还没有生成目标对象（代理对象），所以该处理器只解析切面，并加入缓存
+解析切面：在后置处理器中解析所有的bean,拿到class对象，看对象上是否加了@Aspect注解，然后在拿到每个方法class.getMethod(),根据方法上的注解来生成相应的切面对象</code></pre><p>解析切面类中的注解生成对应的Advice对象</p>
+</li>
+<li><p>aop默认使用什么代理？<br>如果@EnableAspectJAutoProxy(proxyTargetClass = false –默认false)时，如果代理类实现了接口，就用JDK动态代理，没有实现接口使用cglib代理<br>如果@EnableAspectJAutoProxy(proxyTargetClass = true) 指定为true时，强制使用cglib代理</p>
+</li>
+<li><p>@EnableAspetAutoProxy(expostProxy = true 默认false) 暴露代理对象到当前的线程变量中<br>通过以下调用，从线程变量中把代理对象取出来，通过代理对象调用，这样被调用的方法也会被增强<br>AopContext.currentProxt().add();<br>类似的还有事物方法，a调用b，然后b也会自动加上事物</p>
+</li>
+<li><p>怎么指定切面优先级<br>通过@order(1) 指定参数，参数越小，级别越高<br>实现Ordered接口，重写order方法，原理一样<br>如果不指定，最低级别，事物切面一样，如果一个方法即有切面，又有事物，order都不指定，事物先执行<br>解析完切面为什么加入到缓存<br>重复使用</p>
+</li>
 </ul>
 
       
@@ -363,8 +373,8 @@ User user = new User() 栈内存中也会有局部变量user，然后它的指�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/08/Nginx详解/" rel="next" title="MySQL优化">
-                <i class="fa fa-chevron-left"></i> MySQL优化
+              <a href="/2019/08/14/jvm-笔记/" rel="next" title="jvm 笔记">
+                <i class="fa fa-chevron-left"></i> jvm 笔记
               </a>
             
           </div>
@@ -372,10 +382,6 @@ User user = new User() 栈内存中也会有局部变量user，然后它的指�
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/15/spring/" rel="prev" title="spring">
-                spring <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -498,7 +504,7 @@ User user = new User() 栈内存中也会有局部变量user，然后它的指�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#jvm"><span class="nav-number">1.</span> <span class="nav-text">jvm</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring"><span class="nav-number">1.</span> <span class="nav-text">Spring</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注解配置启动"><span class="nav-number">1.1.</span> <span class="nav-text">注解配置启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后置处理器-实现BeanPostProcessor-干预bean的初始化过程"><span class="nav-number">1.2.</span> <span class="nav-text">后置处理器 实现BeanPostProcessor 干预bean的初始化过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-和spring-MVC整合的时候会出现父子容器"><span class="nav-number">1.3.</span> <span class="nav-text">spring 和spring MVC整合的时候会出现父子容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IOC"><span class="nav-number">1.4.</span> <span class="nav-text">IOC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP"><span class="nav-number">1.5.</span> <span class="nav-text">AOP</span></a></li></ol></li></ol></div>
             
 
           </div>
